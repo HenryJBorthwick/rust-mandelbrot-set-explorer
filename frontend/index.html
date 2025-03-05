@@ -4,12 +4,242 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Rust Wasm with Vite + TS</title>
+    <title>Rust WASM Explorer</title>
+    <style>
+      :root {
+        --rust-color: #F74C00;
+        --dark-bg: #1a1a1a;
+        --light-text: #f0f0f0;
+        --accent-color: #7aacfe;
+      }
+      
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: var(--dark-bg);
+        color: var(--light-text);
+        line-height: 1.6;
+      }
+      
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+      
+      header {
+        text-align: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--rust-color);
+      }
+      
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--rust-color);
+      }
+      
+      .tagline {
+        font-size: 1.2rem;
+        opacity: 0.8;
+      }
+      
+      .wasm-demo {
+        background-color: #272727;
+        border-radius: 8px;
+        padding: 2rem;
+        margin: 2rem 0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      
+      .demo-title {
+        color: var(--accent-color);
+        margin-bottom: 1rem;
+      }
+      
+      .input-section {
+        display: flex;
+        margin-bottom: 1rem;
+        gap: 10px;
+      }
+      
+      input {
+        flex: 1;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 4px;
+        background-color: #333;
+        color: var(--light-text);
+      }
+      
+      button {
+        background-color: var(--rust-color);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 0.75rem 1.5rem;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s;
+      }
+      
+      button:hover {
+        background-color: #e34400;
+      }
+      
+      .output-section {
+        background-color: #333;
+        border-radius: 4px;
+        padding: 1rem;
+        min-height: 60px;
+      }
+      
+      .counter-section {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+      
+      .counter-display {
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--accent-color);
+        min-width: 60px;
+        text-align: center;
+        position: relative;
+        cursor: pointer;
+      }
+      
+      .counter-display::after {
+        content: "Double-click to reset";
+        position: absolute;
+        bottom: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #333;
+        color: var(--light-text);
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+      
+      .counter-display:hover::after {
+        opacity: 0.9;
+      }
+      
+      .tech-stack {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 3rem;
+      }
+      
+      .tech-item {
+        text-align: center;
+      }
+      
+      .tech-logo {
+        height: 50px;
+        margin-bottom: 0.5rem;
+      }
+      
+      footer {
+        text-align: center;
+        margin-top: 3rem;
+        padding-top: 1rem;
+        border-top: 1px solid #333;
+        opacity: 0.7;
+      }
+      
+      .glow-effect {
+        animation: glow 2s infinite alternate;
+      }
+      
+      @keyframes glow {
+        from {
+          text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--rust-color);
+        }
+        to {
+          text-shadow: 0 0 10px #fff, 0 0 20px var(--rust-color), 0 0 30px var(--rust-color);
+        }
+      }
+
+      .increment-animation {
+        animation: increment 0.3s ease-out;
+      }
+
+      .decrement-animation {
+        animation: decrement 0.3s ease-out;
+      }
+
+      @keyframes increment {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); color: #00ff00; }
+        100% { transform: scale(1); }
+      }
+
+      @keyframes decrement {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); color: #ff3333; }
+        100% { transform: scale(1); }
+      }
+    </style>
   </head>
   <body>
-    <h1>Rust Wasm with Vite + TypeScript</h1>
-    <button id="greet-button">Click me!</button>
-    <p id="greet-message"></p>
+    <div class="container">
+      <header>
+        <h1 class="glow-effect">Rust + WebAssembly</h1>
+        <p class="tagline">Experience the power and performance of Rust on the web</p>
+      </header>
+      
+      <div class="wasm-demo">
+        <h2 class="demo-title">Greeting Demo</h2>
+        <p>Click the button to receive a greeting from Rust!</p>
+        <div class="input-section">
+          <button id="greet-button">Greet Me!</button>
+        </div>
+        <div class="output-section">
+          <p id="greet-message"></p>
+        </div>
+      </div>
+      
+      <div class="wasm-demo">
+        <h2 class="demo-title">WASM Counter</h2>
+        <p>A simple counter implemented in Rust and compiled to WebAssembly:</p>
+        <div class="counter-section">
+          <button id="decrement-button">-</button>
+          <div class="counter-display" id="counter-value">0</div>
+          <button id="increment-button">+</button>
+        </div>
+      </div>
+      
+      <div class="tech-stack">
+        <div class="tech-item">
+          <img class="tech-logo" src="https://rustacean.net/assets/rustacean-flat-happy.svg" alt="Rust logo">
+          <p>Rust</p>
+        </div>
+        <div class="tech-item">
+          <img class="tech-logo" src="https://upload.wikimedia.org/wikipedia/commons/1/1f/WebAssembly_Logo.svg" alt="WebAssembly logo">
+          <p>WebAssembly</p>
+        </div>
+        <div class="tech-item">
+          <img class="tech-logo" src="https://vitejs.dev/logo.svg" alt="Vite logo">
+          <p>Vite</p>
+        </div>
+      </div>
+      
+      <footer>
+        <p>Built with Rust, WebAssembly, and TypeScript</p>
+      </footer>
+    </div>
+    
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
