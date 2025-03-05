@@ -22,10 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Rust
-/wasm-module/target/
-
-# Vite
-/frontend/node_modules/
-/frontend/dist/
