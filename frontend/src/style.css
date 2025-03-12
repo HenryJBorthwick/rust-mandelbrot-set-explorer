@@ -1,96 +1,184 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+  --rust-color: #F74C00;
+  --dark-bg: #1a1a1a;
+  --light-text: #f0f0f0;
+  --accent-color: #7aacfe;
 }
 
 body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  padding: 0;
+  background-color: var(--dark-bg);
+  color: var(--light-text);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--rust-color);
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--rust-color);
 }
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
+.tagline {
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+.wasm-demo {
+  background-color: #272727;
+  border-radius: 8px;
   padding: 2rem;
-  text-align: center;
+  margin: 2rem 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #3178c6aa);
+.demo-title {
+  color: var(--accent-color);
+  margin-bottom: 1rem;
 }
 
-.card {
-  padding: 2em;
+.input-section {
+  display: flex;
+  margin-bottom: 1rem;
+  gap: 10px;
 }
 
-.read-the-docs {
-  color: #888;
+input {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #333;
+  color: var(--light-text);
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--rust-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  font-weight: bold;
+  transition: background-color 0.3s;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+button:hover {
+  background-color: #e34400;
+}
+
+.output-section {
+  background-color: #333;
+  border-radius: 4px;
+  padding: 1rem;
+  min-height: 60px;
+}
+
+.counter-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.counter-display {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--accent-color);
+  min-width: 60px;
+  text-align: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.counter-display::after {
+  content: "Double-click to reset";
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: var(--light-text);
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.counter-display:hover::after {
+  opacity: 0.9;
+}
+
+.tech-stack {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.tech-item {
+  text-align: center;
+}
+
+.tech-logo {
+  height: 50px;
+  margin-bottom: 0.5rem;
+}
+
+footer {
+  text-align: center;
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid #333;
+  opacity: 0.7;
+}
+
+.glow-effect {
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--rust-color);
   }
-  a:hover {
-    color: #747bff;
+  to {
+    text-shadow: 0 0 10px #fff, 0 0 20px var(--rust-color), 0 0 30px var(--rust-color);
   }
-  button {
-    background-color: #f9f9f9;
-  }
+}
+
+.increment-animation {
+  animation: increment 0.3s ease-out;
+}
+
+.decrement-animation {
+  animation: decrement 0.3s ease-out;
+}
+
+@keyframes increment {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); color: #00ff00; }
+  100% { transform: scale(1); }
+}
+
+@keyframes decrement {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); color: #ff3333; }
+  100% { transform: scale(1); }
 }
