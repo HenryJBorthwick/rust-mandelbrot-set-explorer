@@ -182,3 +182,121 @@ footer {
   50% { transform: scale(1.2); color: #ff3333; }
   100% { transform: scale(1); }
 }
+
+/* Tab Navigation */
+.tab-navigation {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.tab-navigation button {
+  background-color: #333;
+  color: var(--light-text);
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+}
+
+.tab-navigation button.active {
+  background-color: var(--rust-color);
+}
+
+/* Fractal Viewer Component */
+.fractal-viewer {
+  background-color: #272727;
+  border-radius: 8px;
+  padding: 2rem;
+  margin: 2rem 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.fractal-viewer h2 {
+  color: var(--accent-color);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.canvas-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.canvas-container canvas {
+  border: 2px solid #444;
+  border-radius: 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 100%;
+  height: auto;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 200px;
+}
+
+.control-group label {
+  margin-bottom: 0.5rem;
+  color: var(--accent-color);
+}
+
+.control-group input[type="range"] {
+  width: 100%;
+}
+
+.control-group input[type="number"] {
+  width: 100%;
+  padding: 0.5rem;
+}
+
+.control-group span {
+  margin-top: 0.25rem;
+  text-align: center;
+  color: var(--light-text);
+}
+
+.reset-button {
+  align-self: flex-end;
+  background-color: #555;
+  padding: 0.5rem 1rem;
+}
+
+.reset-button:hover {
+  background-color: #666;
+}
+
+.instructions {
+  background-color: #333;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.instructions p {
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .control-group {
+    width: 100%;
+  }
+}

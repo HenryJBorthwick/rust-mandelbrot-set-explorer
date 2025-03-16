@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react'
 import GreetingDemo from './components/GreetingDemo'
 import WasmCounter from './components/WasmCounter'
 import TechStack from './components/TechStack'
+import FractalViewer from './components/FractalViewer'
 
 // Import WASM module
 let wasmModule: any = null;
 
 const App = () => {
   const [isWasmLoaded, setIsWasmLoaded] = useState(false);
+  const [activeTab, setActiveTab] = useState('fractal');
 
   useEffect(() => {
     const loadWasm = async () => {
@@ -31,10 +33,30 @@ const App = () => {
         <p className="tagline">Experience the power and performance of Rust on the web</p>
       </header>
       
+      <div className="tab-navigation">
+        <button 
+          className={activeTab === 'fractal' ? 'active' : ''}
+          onClick={() => setActiveTab('fractal')}
+        >
+          Mandelbrot Explorer
+        </button>
+        <button 
+          className={activeTab === 'demo' ? 'active' : ''}
+          onClick={() => setActiveTab('demo')}
+        >
+          Wasm Demo
+        </button>
+      </div>
+      
       {isWasmLoaded ? (
         <>
-          <GreetingDemo wasmModule={wasmModule} />
-          <WasmCounter wasmModule={wasmModule} />
+          {activeTab === 'fractal' && <FractalViewer wasmModule={wasmModule} />}
+          {activeTab === 'demo' && (
+            <>
+              <GreetingDemo wasmModule={wasmModule} />
+              <WasmCounter wasmModule={wasmModule} />
+            </>
+          )}
         </>
       ) : (
         <div className="wasm-demo">
