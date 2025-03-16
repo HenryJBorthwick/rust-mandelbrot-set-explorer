@@ -1,77 +1,32 @@
-import { useEffect, useState } from 'react'
-import GreetingDemo from './components/GreetingDemo'
-import WasmCounter from './components/WasmCounter'
-import TechStack from './components/TechStack'
-import FractalViewer from './components/FractalViewer'
-
-// Import WASM module
-let wasmModule: any = null;
+import FractalViewer from './components/FractalViewer';
+import { useWasm } from './hooks/useWasm';
+import './pkg/wasm_module.js';
 
 const App = () => {
-  const [isWasmLoaded, setIsWasmLoaded] = useState(false);
-  const [activeTab, setActiveTab] = useState('fractal');
-
-  useEffect(() => {
-    const loadWasm = async () => {
-      try {
-        const wasm = await import('./pkg/wasm_module.js');
-        await wasm.default();
-        wasmModule = wasm;
-        setIsWasmLoaded(true);
-      } catch (error) {
-        console.error('Failed to initialize Wasm module:', error);
-      }
-    };
-
-    loadWasm();
-  }, []);
+  const { status } = useWasm();
+  const isWasmLoaded = status === 'loaded';
 
   return (
-    <div className="container">
-      <header>
-        <h1 className="glow-effect">Rust + WebAssembly</h1>
-        <p className="tagline">Experience the power and performance of Rust on the web</p>
+    <div className="max-w-5xl mx-auto p-8 bg-dark-bg text-light-text min-h-screen">
+      <header className="text-center mb-8 pb-4 border-b-2 border-rust-color">
+        <h1 className="text-4xl font-bold mb-2 text-rust-color">Mandelbrot Set Explorer</h1>
+        <p className="text-xl opacity-80">Explore the fascinating world of fractals</p>
       </header>
       
-      <div className="tab-navigation">
-        <button 
-          className={activeTab === 'fractal' ? 'active' : ''}
-          onClick={() => setActiveTab('fractal')}
-        >
-          Mandelbrot Explorer
-        </button>
-        <button 
-          className={activeTab === 'demo' ? 'active' : ''}
-          onClick={() => setActiveTab('demo')}
-        >
-          Wasm Demo
-        </button>
-      </div>
-      
       {isWasmLoaded ? (
-        <>
-          {activeTab === 'fractal' && <FractalViewer wasmModule={wasmModule} />}
-          {activeTab === 'demo' && (
-            <>
-              <GreetingDemo wasmModule={wasmModule} />
-              <WasmCounter wasmModule={wasmModule} />
-            </>
-          )}
-        </>
+        <FractalViewer />
       ) : (
-        <div className="wasm-demo">
-          <h2 className="demo-title">Loading WebAssembly...</h2>
-          <p>Please wait while the WASM module is being initialized.</p>
+        <div className="bg-gray-800 rounded-lg p-8 my-8 shadow-lg text-center">
+          <h2 className="text-2xl font-bold mb-4 text-accent-color">Loading...</h2>
+          <p>Please wait while the WebAssembly module is being initialized.</p>
         </div>
       )}
       
-      <TechStack />
-      
-      <footer>
-        <p>Built with Rust, WebAssembly, and React</p>
+      <footer className="text-center mt-12 pt-4 border-t border-gray-700 opacity-70">
+        <p>Built with Rust, WebAssembly, React, and Tailwind CSS</p>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default App 
+export default App; 

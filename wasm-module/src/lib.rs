@@ -1,43 +1,6 @@
 use wasm_bindgen::prelude::*;
 use num_complex::Complex;
 
-// Global static mutable counter
-static mut COUNTER: i32 = 0;
-
-#[wasm_bindgen]
-pub fn greet() -> String {
-    "Hello from Rust Wasm!".to_string()
-}
-
-#[wasm_bindgen]
-pub fn increment_counter() -> i32 {
-    unsafe {
-        COUNTER += 1;
-        COUNTER
-    }
-}
-
-#[wasm_bindgen]
-pub fn decrement_counter() -> i32 {
-    unsafe {
-        COUNTER -= 1;
-        COUNTER
-    }
-}
-
-#[wasm_bindgen]
-pub fn get_counter() -> i32 {
-    unsafe { COUNTER }
-}
-
-#[wasm_bindgen]
-pub fn reset_counter() -> i32 {
-    unsafe {
-        COUNTER = 0;
-        COUNTER
-    }
-}
-
 #[wasm_bindgen]
 pub fn generate_mandelbrot(width: u32, height: u32, max_iter: u32, zoom: f64, 
                           center_x: f64, center_y: f64) -> Vec<u8> {
