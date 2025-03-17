@@ -5,15 +5,15 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    fontFamily: {
-      sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-    },
     extend: {
       colors: {
-        'rust-color': 'var(--rust-color)',
-        'dark-bg': 'var(--dark-bg)',
-        'light-text': 'var(--light-text)',
-        'accent-color': 'var(--accent-color)',
+        'rust-color': '#F74C00',
+        'dark-bg': '#1a1a1a',
+        'light-text': '#f0f0f0',
+        'accent-color': '#7aacfe',
+      },
+      fontFamily: {
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
       },
     },
   },
