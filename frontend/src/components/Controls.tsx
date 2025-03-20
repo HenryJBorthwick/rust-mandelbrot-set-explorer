@@ -1,6 +1,6 @@
 import React from 'react';
 
-type ColorScheme = 'rainbow' | 'fire' | 'ocean' | 'grayscale';
+type ColorScheme = 'rainbow' | 'fire' | 'ocean' | 'grayscale' | 'cosmic' | 'fireAndAsh' | 'monochrome' | 'psychedelic';
 
 interface ControlsProps {
   maxIter?: number;
@@ -83,6 +83,10 @@ const Controls: React.FC<ControlsProps> = ({
             <option value="fire">Fire</option>
             <option value="ocean">Ocean</option>
             <option value="grayscale">Grayscale</option>
+            <option value="cosmic">Cosmic Nebula</option>
+            <option value="fireAndAsh">Fire and Ash</option>
+            <option value="monochrome">Monochrome with Twist</option>
+            <option value="psychedelic">Psychedelic Ultraviolet</option>
           </select>
         </div>
       </div>

@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as wasmModule from '../pkg/wasm_module.js';
 
-type ColorScheme = 'rainbow' | 'fire' | 'ocean' | 'grayscale';
+type ColorScheme = 'rainbow' | 'fire' | 'ocean' | 'grayscale' | 'cosmic' | 'fireAndAsh' | 'monochrome' | 'psychedelic';
 
 interface FractalViewerProps {
   maxIter?: number;
   zoom?: number;
   centerX?: number;
   centerY?: number;
+  colorScheme?: ColorScheme;
   onCenterChange?: (x: number, y: number) => void;
   onZoomChange?: (zoom: number) => void;
   onDownload?: () => void;
@@ -18,6 +19,7 @@ const FractalViewer: React.FC<FractalViewerProps> = ({
   zoom = 1.0,
   centerX = 0,
   centerY = 0,
+  colorScheme = 'rainbow',
   onCenterChange,
   onZoomChange,
   onDownload
@@ -27,7 +29,6 @@ const FractalViewer: React.FC<FractalViewerProps> = ({
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
   const [canvasSize, setCanvasSize] = useState({ width: 800, height: 600 });
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
-  const [colorScheme, setColorScheme] = useState<ColorScheme>('rainbow');
   const [showCoordinates, setShowCoordinates] = useState<boolean>(true);
   const [mousePosition, setMousePosition] = useState<{ x: number, y: number } | null>(null);
 
@@ -63,7 +64,8 @@ const FractalViewer: React.FC<FractalViewerProps> = ({
           maxIter,
           zoom,
           centerX,
-          centerY
+          centerY,
+          colorScheme
         );
 
         // Render pixels to canvas

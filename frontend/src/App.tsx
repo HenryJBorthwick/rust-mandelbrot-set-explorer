@@ -6,7 +6,7 @@ import Controls from './components/Controls';
 import FractalViewer from './components/FractalViewer';
 import Footer from './components/Footer';
 
-type ColorScheme = 'rainbow' | 'fire' | 'ocean' | 'grayscale';
+type ColorScheme = 'rainbow' | 'fire' | 'ocean' | 'grayscale' | 'cosmic' | 'fireAndAsh' | 'monochrome' | 'psychedelic';
 
 const App = () => {
   const { status } = useWasm();
@@ -49,6 +49,7 @@ const App = () => {
             zoom={zoom}
             centerX={centerX}
             centerY={centerY}
+            colorScheme={colorScheme}
             onCenterChange={(x, y) => {
               setCenterX(x);
               setCenterY(y);

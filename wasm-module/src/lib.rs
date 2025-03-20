@@ -3,7 +3,7 @@ use num_complex::Complex;
 
 #[wasm_bindgen]
 pub fn generate_mandelbrot(width: u32, height: u32, max_iter: u32, zoom: f64, 
-                          center_x: f64, center_y: f64) -> Vec<u8> {
+                          center_x: f64, center_y: f64, color_scheme: &str) -> Vec<u8> {
     // Input validation
     if width == 0 || height == 0 || max_iter == 0 || zoom <= 0.0 {
         return Vec::new();
@@ -38,13 +38,117 @@ pub fn generate_mandelbrot(width: u32, height: u32, max_iter: u32, zoom: f64,
                 pixels.push(0);    // B
                 pixels.push(255);  // A
             } else {
-                // Outside the set - create a smooth color gradient
-                let hue = (i as f64 / max_iter as f64) * 360.0;
-                let (r, g, b) = hsv_to_rgb(hue, 1.0, 1.0);
+                // Outside the set - create a color based on the selected scheme
+                let normalized = i as f64 / max_iter as f64;
                 
-                pixels.push(r);    // R
-                pixels.push(g);    // G
-                pixels.push(b);    // B
+                match color_scheme {
+                    "rainbow" => {
+                        // Rainbow color scheme (hue variation)
+                        let hue = normalized * 360.0;
+                        let (r, g, b) = hsv_to_rgb(hue, 1.0, 1.0);
+                        pixels.push(r);
+                        pixels.push(g);
+                        pixels.push(b);
+                    },
+                    "fire" => {
+                        // Fire color scheme (red to yellow)
+                        let (r, g, b) = hsv_to_rgb(normalized * 60.0, 1.0, 1.0);
+                        pixels.push(r);
+                        pixels.push(g);
+                        pixels.push(b);
+                    },
+                    "ocean" => {
+                        // Ocean color scheme (blue to cyan)
+                        let (r, g, b) = hsv_to_rgb(180.0 + normalized * 60.0, 1.0, 1.0);
+                        pixels.push(r);
+                        pixels.push(g);
+                        pixels.push(b);
+                    },
+                    "grayscale" => {
+                        // Grayscale
+                        let value = (normalized * 255.0) as u8;
+                        pixels.push(value);
+                        pixels.push(value);
+                        pixels.push(value);
+                    },
+                    "cosmic" => {
+                        // Cosmic Nebula (Blues and Purples)
+                        // Interpolate from deep navy to purples, electric blues, and magenta
+                        let hue = 240.0 + normalized * 60.0; // 240 (blue) to 300 (purple)
+                        let saturation = 0.7 + normalized * 0.3; // More saturated as we move out
+                        let value = 0.6 + normalized * 0.4; // Brighter as we move out
+                        let (r, g, b) = hsv_to_rgb(hue, saturation, value);
+                        pixels.push(r);
+                        pixels.push(g);
+                        pixels.push(b);
+                    },
+                    "fireAndAsh" => {
+                        // Fire and Ash (Reds to Grays)
+                        if normalized < 0.5 {
+                            // Deep reds to yellows for lower iterations
+                            let sub_normalized = normalized * 2.0; // Rescale to [0,1]
+                            let hue = 0.0 + sub_normalized * 60.0; // Red to yellow
+                            let (r, g, b) = hsv_to_rgb(hue, 1.0, 1.0);
+                            pixels.push(r);
+                            pixels.push(g);
+                            pixels.push(b);
+                        } else {
+                            // Cooling off to grays and whites for higher iterations
+                            let sub_normalized = (normalized - 0.5) * 2.0; // Rescale to [0,1]
+                            let saturation = 1.0 - sub_normalized; // Desaturate to gray
+                            let value = 0.5 + sub_normalized * 0.5; // Brighten to white
+                            let (r, g, b) = hsv_to_rgb(30.0, saturation, value); // Starting from orange-ish
+                            pixels.push(r);
+                            pixels.push(g);
+                            pixels.push(b);
+                        }
+                    },
+                    "monochrome" => {
+                        // Monochrome with a Twist
+                        if normalized > 0.9 {
+                            // Accent color at the edges (high iteration)
+                            let (r, g, b) = hsv_to_rgb(320.0, 1.0, 1.0); // Neon pink accent
+                            pixels.push(r);
+                            pixels.push(g);
+                            pixels.push(b);
+                        } else {
+                            // Grayscale for most iterations
+                            let value = (normalized * 255.0) as u8;
+                            pixels.push(value);
+                            pixels.push(value);
+                            pixels.push(value);
+                        }
+                    },
+                    "psychedelic" => {
+                        // Psychedelic Ultraviolet
+                        // Cycling through ultraviolet, hot pink and neon yellows
+                        let hue = (normalized * 3.0 * 360.0) % 360.0; // Fast color cycle
+                        
+                        // Favoring purple/pink/yellow ranges
+                        let adjusted_hue = if hue < 60.0 {
+                            270.0 + hue / 2.0 // Purple to pink
+                        } else if hue < 180.0 {
+                            300.0 + (hue - 60.0) / 4.0 // Pink to magenta
+                        } else {
+                            60.0 + (hue - 180.0) / 6.0 // Some yellows and greens
+                        };
+                        
+                        // High saturation and value for vibrancy
+                        let (r, g, b) = hsv_to_rgb(adjusted_hue, 0.9, 1.0);
+                        pixels.push(r);
+                        pixels.push(g);
+                        pixels.push(b);
+                    },
+                    _ => {
+                        // Default to rainbow if unknown scheme
+                        let hue = normalized * 360.0;
+                        let (r, g, b) = hsv_to_rgb(hue, 1.0, 1.0);
+                        pixels.push(r);
+                        pixels.push(g);
+                        pixels.push(b);
+                    }
+                }
+                
                 pixels.push(255);  // A
             }
         }
