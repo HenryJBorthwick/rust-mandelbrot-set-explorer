@@ -1,9 +1,9 @@
 import { useWasm } from './hooks/useWasm';
 import './pkg/wasm_module.js';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Header from './components/Header';
 import Controls from './components/Controls';
-import FractalViewer from './components/FractalViewer';
+import FractalViewer, { FractalViewerHandle } from './components/FractalViewer';
 import Footer from './components/Footer';
 
 type ColorScheme = 'rainbow' | 'fire' | 'ocean' | 'grayscale' | 'cosmic' | 'fireAndAsh' | 'monochrome' | 'psychedelic';
@@ -16,6 +16,7 @@ const App = () => {
   const [centerX, setCenterX] = useState<number>(0);
   const [centerY, setCenterY] = useState<number>(0);
   const [colorScheme, setColorScheme] = useState<ColorScheme>('rainbow');
+  const fractalViewerRef = useRef<FractalViewerHandle>(null);
   
   const handleReset = () => {
     setMaxIter(100);
@@ -25,7 +26,8 @@ const App = () => {
   };
   
   const handleDownload = () => {
-    // This is handled directly in FractalViewer
+    // Call the downloadImage method from FractalViewer
+    fractalViewerRef.current?.downloadImage();
   };
 
   return (
@@ -45,6 +47,7 @@ const App = () => {
             onDownload={handleDownload}
           />
           <FractalViewer 
+            ref={fractalViewerRef}
             maxIter={maxIter}
             zoom={zoom}
             centerX={centerX}

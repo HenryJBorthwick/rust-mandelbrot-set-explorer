@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react';
 import * as wasmModule from '../pkg/wasm_module.js';
 
 type ColorScheme = 'rainbow' | 'fire' | 'ocean' | 'grayscale' | 'cosmic' | 'fireAndAsh' | 'monochrome' | 'psychedelic';
@@ -14,7 +14,11 @@ interface FractalViewerProps {
   onDownload?: () => void;
 }
 
-const FractalViewer: React.FC<FractalViewerProps> = ({
+export interface FractalViewerHandle {
+  downloadImage: () => void;
+}
+
+const FractalViewer = forwardRef<FractalViewerHandle, FractalViewerProps>(({
   maxIter = 100,
   zoom = 1.0,
   centerX = 0,
@@ -23,7 +27,7 @@ const FractalViewer: React.FC<FractalViewerProps> = ({
   onCenterChange,
   onZoomChange,
   onDownload
-}) => {
+}, ref) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(null);
@@ -31,6 +35,19 @@ const FractalViewer: React.FC<FractalViewerProps> = ({
   const [isGenerating, setIsGenerating] = useState<boolean>(false);
   const [showCoordinates, setShowCoordinates] = useState<boolean>(true);
   const [mousePosition, setMousePosition] = useState<{ x: number, y: number } | null>(null);
+
+  // Expose the downloadImage method via ref
+  useImperativeHandle(ref, () => ({
+    downloadImage: () => {
+      if (!canvasRef.current) return;
+      
+      // Create a download link
+      const link = document.createElement('a');
+      link.download = `mandelbrot-x${centerX.toFixed(3)}-y${centerY.toFixed(3)}-zoom${zoom.toFixed(1)}.png`;
+      link.href = canvasRef.current.toDataURL('image/png');
+      link.click();
+    }
+  }));
 
   // Handle window resize to make the canvas responsive
   useEffect(() => {
@@ -180,6 +197,7 @@ const FractalViewer: React.FC<FractalViewerProps> = ({
     }
   };
 
+  // Keep the existing downloadImage function for compatibility
   const downloadImage = () => {
     if (!canvasRef.current) return;
     
@@ -241,6 +259,6 @@ const FractalViewer: React.FC<FractalViewerProps> = ({
       </div>
     </div>
   );
-};
+});
 
 export default FractalViewer; 
