@@ -3,7 +3,7 @@ use num_complex::Complex;
 
 #[wasm_bindgen]
 pub fn generate_mandelbrot(width: u32, height: u32, max_iter: u32, zoom: f64, 
-                          center_x: f64, center_y: f64, color_scheme: &str) -> Vec<u8> {
+                          center_x: f64, center_y: f64, colour_scheme: &str) -> Vec<u8> {
     // Input validation
     if width == 0 || height == 0 || max_iter == 0 || zoom <= 0.0 {
         return Vec::new();
@@ -30,7 +30,7 @@ pub fn generate_mandelbrot(width: u32, height: u32, max_iter: u32, zoom: f64,
                 i += 1;
             }
 
-            // Color mapping based on iteration count
+            // Colour mapping based on iteration count
             if i == max_iter {
                 // Point is in the Mandelbrot set (black)
                 pixels.push(0);    // R
@@ -38,12 +38,12 @@ pub fn generate_mandelbrot(width: u32, height: u32, max_iter: u32, zoom: f64,
                 pixels.push(0);    // B
                 pixels.push(255);  // A
             } else {
-                // Outside the set - create a color based on the selected scheme
+                // Outside the set - create a colour based on the selected scheme
                 let normalized = i as f64 / max_iter as f64;
                 
-                match color_scheme {
+                match colour_scheme {
                     "rainbow" => {
-                        // Rainbow color scheme (hue variation)
+                        // Rainbow colour scheme (hue variation)
                         let hue = normalized * 360.0;
                         let (r, g, b) = hsv_to_rgb(hue, 1.0, 1.0);
                         pixels.push(r);
@@ -51,14 +51,14 @@ pub fn generate_mandelbrot(width: u32, height: u32, max_iter: u32, zoom: f64,
                         pixels.push(b);
                     },
                     "fire" => {
-                        // Fire color scheme (red to yellow)
+                        // Fire colour scheme (red to yellow)
                         let (r, g, b) = hsv_to_rgb(normalized * 60.0, 1.0, 1.0);
                         pixels.push(r);
                         pixels.push(g);
                         pixels.push(b);
                     },
                     "ocean" => {
-                        // Ocean color scheme (blue to cyan)
+                        // Ocean colour scheme (blue to cyan)
                         let (r, g, b) = hsv_to_rgb(180.0 + normalized * 60.0, 1.0, 1.0);
                         pixels.push(r);
                         pixels.push(g);
@@ -106,7 +106,7 @@ pub fn generate_mandelbrot(width: u32, height: u32, max_iter: u32, zoom: f64,
                     "monochrome" => {
                         // Monochrome with a Twist
                         if normalized > 0.9 {
-                            // Accent color at the edges (high iteration)
+                            // Accent colour at the edges (high iteration)
                             let (r, g, b) = hsv_to_rgb(320.0, 1.0, 1.0); // Neon pink accent
                             pixels.push(r);
                             pixels.push(g);
@@ -122,9 +122,9 @@ pub fn generate_mandelbrot(width: u32, height: u32, max_iter: u32, zoom: f64,
                     "psychedelic" => {
                         // Psychedelic Ultraviolet
                         // Cycling through ultraviolet, hot pink and neon yellows
-                        let hue = (normalized * 3.0 * 360.0) % 360.0; // Fast color cycle
+                        let hue = (normalized * 3.0 * 360.0) % 360.0; // Fast colour cycle
                         
-                        // Favoring purple/pink/yellow ranges
+                        // Favouring purple/pink/yellow ranges
                         let adjusted_hue = if hue < 60.0 {
                             270.0 + hue / 2.0 // Purple to pink
                         } else if hue < 180.0 {
@@ -157,7 +157,7 @@ pub fn generate_mandelbrot(width: u32, height: u32, max_iter: u32, zoom: f64,
     pixels
 }
 
-// Helper function to convert HSV to RGB for more vibrant colors
+// Helper function to convert HSV to RGB for more vibrant colours
 fn hsv_to_rgb(h: f64, s: f64, v: f64) -> (u8, u8, u8) {
     let c = v * s;
     let h_prime = h / 60.0;
