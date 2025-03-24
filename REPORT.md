@@ -4,27 +4,27 @@
 
 ### wasm-module
 
-The Rust WebAssembly module performs the core mathematical computations of the Mandelbrot set.
+Performs core mathematical computations of the Mandelbrot set.
 
-The generation of the Mandelbrot set begins with mapping each pixel to a point in the complex plane. For each point c, we perform the iterative calculation z = z² + c, starting with z = 0. The number of iterations before |z| exceeds 2 determines whether the point is in the set and its colouring.
+The generation of the Mandelbrot set starts with mapping each pixel to a point on the complex plane. For each point c, perform the iterative calculation z = z² + c, starting with z = 0. The number of iterations before |z| exceeds 2 determines whether the point is in the set and its colouring.
 
 The computation flow works as follows:
 
-1. The module receives viewport parameters (width, height, zoom, center coordinates) from JavaScript
+1. Module fed viewport parameters (width, height, zoom, center coordinates) from JavaScript
 2. For each pixel coordinate (x, y), it:
    - Maps the pixel to complex coordinates using viewport transformations
    - Performs the Mandelbrot iteration loop (z = z² + c)
    - Tracks iteration count and escape velocity
-3. The resulting data is stored in a pre-allocated RGBA buffer:
+3. Resulting data stored in a pre-allocated RGBA buffer:
    - Buffer size is calculated as width × height × 4 (for R,G,B,A channels)
    - Points inside the set (reaching max iterations) are coloured black
    - Points outside are coloured based on escape velocity using HSV color space
 
-Color processing involves converting iteration counts to visually appealing colors:
+Color processing involves processing iteration counts to visual colors:
 
 - HSV color space is used for smooth transitions
 - Hue is calculated from normalized iteration count
-- Different color schemes modify the HSV parameters differently:
+- Different color schemes change the HSV parameters:
   - Rainbow: Full hue rotation (0-360°)
   - Fire: Limited hue range (0-60°) with high saturation
   - Ocean: Blue-cyan range (180-240°) with varying brightness
@@ -33,9 +33,9 @@ Color processing involves converting iteration counts to visually appealing colo
 
 The frontend is where the visualisation is rendered:
 
-The rendering process follows this sequence:
+The rendering process follows this series of steps:
 
-1. User interactions (pan/zoom) trigger state updates in React
+1. User interactions (pan/zoom) trigger state updates in the React
 2. The FractalViewer component:
    - Calculates new viewport parameters
    - Calls the WebAssembly module with updated parameters
@@ -46,10 +46,10 @@ Interaction handling works through coordinate space transformations:
 
 1. Mouse coordinates are captured in screen space
 2. Screen coordinates are transformed to complex plane coordinates:
-   - Transform includes current zoom level and center position
-   - Maintains aspect ratio to prevent distortion
+   - Transform includes current zoom level plus the center position
+   - Maintains aspect ratio preventing distortion
 3. During zooming:
-   - The point under cursor becomes the new center
+   - The point under cursor becomes new center
    - Zoom factor is applied relative to this point
    - Complex plane coordinates are recalculated
 
@@ -65,7 +65,7 @@ State management flows in a cycle:
 
 The canvas rendering system:
 
-1. Uses a direct pixel manipulation approach
+1. Uses a direct pixel manipulation strategy
 2. WebAssembly module writes to a shared memory buffer
 3. Buffer is converted to ImageData
 4. ImageData is drawn to canvas in a single operation
@@ -75,14 +75,14 @@ The canvas rendering system:
 
 ### 1. WebAssembly Performance Optimization
 
-**Challenge**: Initial implementations exhibited performance issues with large viewports and high iteration counts. Key bottlenecks were:
+**Challenge**: Initial implementations had performance hiccups with large viewports and high iteration counts. Key bottlenecks included:
 
 - Memory allocation overhead during pixel buffer generation
 - Data transfer costs between Rust and JavaScript
 - Complex number calculations performance
 - Memory access patterns affecting cache efficiency
 
-**Solution**: 
+**Solution**:
 
 1. Memory Management Optimization:
    - Implemented single pre-allocated Vec<u8> buffer: `Vec::with_capacity((width * height * 4) as usize)`
@@ -105,12 +105,12 @@ The canvas rendering system:
 
 ### 2. Color Scheme Implementation
 
-**Challenge**: Initial color mapping had issues:
+**Challenge**: Initial color mapping had problems:
 
-- Abrupt color transitions between iteration values
+- Doggy color transitions between iteration values
 - Limited visual differentiation in high-iteration areas
 - Color scheme consistency across different zoom levels
-- Performance impact of color calculations
+- Performance impact of color computations
 
 **Solution**:
 
@@ -153,7 +153,7 @@ The canvas rendering system:
 
 - Blocking during WebAssembly computations
 - State update cascades triggering multiple re-renders
-- Canvas performance with frequent updates
+- Canvas performance with lots of frequent updates
 - Memory leaks in the rendering pipeline
 
 **Solution**:
@@ -199,31 +199,28 @@ The canvas rendering system:
 
 ### Functionality (40%)
 
-- Complete implementation of core Mandelbrot set visualization
-- Efficient WebAssembly computation
-- Multiple interactive features
-- Smooth user experience
+- Mandelbrot set explorer that calculates whether points are in the Mandelbrot set using the standard formula
+- Settings that allow for detail customization (level, view position, and magnification)
+- Pleasant user experience with responsive ui
 
 ### Rust Code Quality (20%)
 
-- Clean, well-structured Rust code
-- Effective use of Rust's type system
-- Proper error handling
-- Efficient algorithms
-- Good documentation
+- Used libraries to handle complex numbers properly
+- Set memory ahead of time instead of constantly creating and destroying it
+- Error handling by checking all inputs to make sure the program won't crash with bad values
+- Made efficient by skipping unnecessary math operations where possible (like avoiding square roots)
+- Code comments
 
 ### JavaScript Interop (20%)
 
-- Seamless WebAssembly integration
-- Efficient data transfer between Rust and JavaScript
-- Well-structured TypeScript interfaces
-- Proper memory management
+- Data moves between languages without making unnecessary copies
+- Proper types to catch errors
+- React components only update when they need to
 
 ### Creativity & Usability (20%)
 
-- Multiple color schemes
-- Interactive zoom and pan
-- Image download capability
-- Responsive design
+- Eight different colouring options for different fractal features
+- Mouse controls for moving and zooming around
+- A way to save images of cool patterns you find
 
 #### Total Self-Assessed Grade: A range

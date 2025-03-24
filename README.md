@@ -4,7 +4,8 @@ A Mandelbrot set visualization tool built with Rust, WebAssembly, and React.
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed:
+Ensure you have the following installed:
+
 - [Node.js](https://nodejs.org/) (v16 or higher)
 - [Rust](https://www.rust-lang.org/tools/install)
 - [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/)
@@ -34,13 +35,11 @@ npm install
 npm run dev
 ```
 
-The application will be available at `http://localhost:5173`
-
 ## Project Structure
 
 ```
 assignment1/
-├── frontend/         # React frontend application
-├── wasm-module/      # Rust WebAssembly module
+├── frontend/        # React frontend application
+├── wasm-module/     # Rust WebAssembly module
 └── README.md        # This file
 ```
