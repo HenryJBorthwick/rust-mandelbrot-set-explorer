@@ -12,7 +12,19 @@ Ensure you have the following installed:
 
 ## Building and Running
 
-### 1. Build the WebAssembly Module
+```bash
+# Navigate to the frontend directory
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start the development server
+# This will automatically build the WebAssembly module if needed
+npm run dev
+```
+
+If you encounter any issues with the WebAssembly module, you can manually build it:
 
 ```bash
 # Navigate to the wasm module directory
@@ -20,19 +32,6 @@ cd wasm-module
 
 # Build the WebAssembly module
 wasm-pack build --target web
-```
-
-### 2. Set Up and Run the Frontend
-
-```bash
-# Navigate to the frontend directory
-cd ../frontend
-
-# Install dependencies
-npm install
-
-# Start the development server
-npm run dev
 ```
 
 ## Project Structure
